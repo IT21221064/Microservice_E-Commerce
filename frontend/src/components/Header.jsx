@@ -1,50 +1,77 @@
 import React from "react";
-import { AppBar, Toolbar, Typography, Box, TextField, InputAdornment } from "@mui/material";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Box,
+  TextField,
+  InputAdornment,
+  useTheme,
+} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 
 const Header = ({ search, setSearch }) => {
-    return (
-        <AppBar
-        position="fixed"
-        elevation={0}
+  const theme = useTheme();
+
+  return (
+    <AppBar
+      position="absolute"
+      elevation={4}
+      sx={{
+        background: "linear-gradient(to right, rgb(31, 57, 83), rgb(45, 97, 152)) !important", 
+        borderBottom: "1px solid #e0e0e0",
+        boxShadow: "0 2px 12px rgba(0,0,0,0.04)",
+        zIndex: 1300,
+      }}
+    >
+      <Toolbar
         sx={{
-          bgcolor: "#ffffff",
-          borderBottom: "1px solid #e0e0e0",
-          zIndex: 1300,
+          justifyContent: "space-between",
+          py: 2,
+          px: { xs: 2, sm: 4, md: 8 },
         }}
       >
-        <Toolbar sx={{ justifyContent: "space-between", py: 1 }}>
-          <Typography
-            variant="h5"
-            sx={{
-              fontWeight: 800,
-              color: "#1976d2",
-              letterSpacing: 1,
-            }}
-          >
-            ShopEase
-          </Typography>
-          <TextField
-            placeholder="Search for amazing deals..."
-            size="small"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon />
-                </InputAdornment>
-              ),
-            }}
-            sx={{
-              bgcolor: "#f1f1f1",
-              borderRadius: 2,
-              width: { xs: "100%", sm: "300px" },
-            }}
-          />
-        </Toolbar>
-      </AppBar>
-    );
-  };
-  
+        <Typography
+          variant="h4"
+          sx={{
+            fontWeight: 800,
+            color: "white",
+            fontFamily: "'Poppins', sans-serif",
+            letterSpacing: 1,
+          }}
+        >
+          ShopEase
+        </Typography>
+
+        <TextField
+          placeholder="Search for amazing deals..."
+          size="small"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon color="action" />
+              </InputAdornment>
+            ),
+            sx: {
+              bgcolor: "#ffffff",
+              borderRadius: 3,
+              px: 1,
+              height: 42,
+              fontSize: "0.9rem",
+            },
+          }}
+          sx={{
+            width: { xs: "100%", sm: "300px", md: "350px" },
+            "& input": {
+              fontSize: "0.95rem",
+            },
+          }}
+        />
+      </Toolbar>
+    </AppBar>
+  );
+};
+
 export default Header;
