@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+// src/pages/ProductList.jsx
+import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import {
   Container,
@@ -9,11 +10,24 @@ import {
   Stack,
   Fade,
   Divider,
-  Paper
+  Paper,
 } from "@mui/material";
 import ProductCard from "../components/ProductCard";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+
+// A tiny wrapper that creates a ref, passes it to both Fade and the DOM node
+const FadeProduct = ({ product }) => {
+  const nodeRef = useRef(null);
+
+  return (
+    <Fade in timeout={600} nodeRef={nodeRef}>
+      <Box ref={nodeRef} sx={{ flex: 1, display: "flex" }}>
+        <ProductCard product={product} />
+      </Box>
+    </Fade>
+  );
+};
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
@@ -29,8 +43,7 @@ const ProductList = () => {
         const data = res.data.data;
         setProducts(data);
         setFilteredProducts(data);
-        const cats = [...new Set(data.map((p) => p.category))];
-        setCategories(cats);
+        setCategories([...new Set(data.map((p) => p.category))]);
       }
     });
   }, []);
@@ -60,17 +73,23 @@ const ProductList = () => {
       <Header search={search} setSearch={setSearch} />
 
       <Container maxWidth="xl" sx={{ mt: 10, mb: 12 }}>
-        <Paper elevation={0} sx={{ textAlign: "center", py: 5, px: 2, background: "linear-gradient(to right, #e3f2fd, #fce4ec)", borderRadius: 4 }}>
+        <Paper
+          elevation={0}
+          sx={{
+            textAlign: "center",
+            py: 5,
+            px: 2,
+            background: "linear-gradient(to right, #e3f2fd, #fce4ec)",
+            borderRadius: 4,
+          }}
+        >
           <Typography
             variant="h3"
             sx={{ fontWeight: "bold", mb: 1, color: "primary.main" }}
           >
             ✨ Discover Your Next Favorite Item
           </Typography>
-          <Typography
-            variant="subtitle1"
-            sx={{ color: "text.secondary" }}
-          >
+          <Typography variant="subtitle1" sx={{ color: "text.secondary" }}>
             Browse by category, or take advantage of hot offers below
           </Typography>
         </Paper>
@@ -118,25 +137,30 @@ const ProductList = () => {
 
         <Divider sx={{ mb: 4 }} />
 
-{filteredProducts.length > 0 ? (
-  <Grid container spacing={4} alignItems="stretch">
-    {filteredProducts.map((product) => (
-      <Grid item xs={12} sm={6} md={4} lg={3} key={product._id} sx={{ display: "flex" }}>
-      <Fade in timeout={600} style={{ flex: 1, display: "flex" }}>
-        <ProductCard product={product} />
-      </Fade>
-    </Grid>
-    
-    ))}
-  </Grid>
-) : (
-  <Box sx={{ mt: 8, textAlign: "center" }}>
-    <Typography variant="h6" color="text.secondary">
-      No products found.
-    </Typography>
-  </Box>
-)}
-</Container>
+        {filteredProducts.length > 0 ? (
+          <Grid container spacing={4} alignItems="stretch">
+            {filteredProducts.map((product) => (
+              <Grid
+                item
+                xs={12}
+                sm={6}
+                md={4}
+                lg={3}
+                key={product._id}
+                sx={{ display: "flex" }}
+              >
+                <FadeProduct product={product} />
+              </Grid>
+            ))}
+          </Grid>
+        ) : (
+          <Box sx={{ mt: 8, textAlign: "center" }}>
+            <Typography variant="h6" color="text.secondary">
+              No products found.
+            </Typography>
+          </Box>
+        )}
+      </Container>
 
       <Footer />
     </Box>
