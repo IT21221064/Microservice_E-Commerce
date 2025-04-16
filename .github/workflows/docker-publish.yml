@@ -20,7 +20,7 @@ jobs:
 
     - name: Build Docker image for Inventory Service
       run: |
-       docker build -t ecommercemicroservice/inventoryservice:latest .backend/inventoryService
+       docker build -t ecommercemicroservice/inventoryservice:latest ./backend/InventoryService
 
     - name: Push Docker image for Inventory Service
       run: |
@@ -28,7 +28,7 @@ jobs:
 
     - name: Build Docker image for Product Service
       run: |
-        docker build -t ecommercemicroservice/productservice:latest .backend/productService  
+        docker build -t ecommercemicroservice/productservice:latest ./backend/ProductService  
 
     - name: Push Docker image for Product Service
       run: |
