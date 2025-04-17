@@ -1,0 +1,35 @@
+name: Build and Push to Docker Hub
+
+on:
+  push:
+    branches: [ Dev-Nadun ]  # Trigger on push to 'master' (change to 'main' if using 'main' as your default branch)
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3  # This checks out the code from the repository
+
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v2  # Log in to Docker Hub
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}  # Docker username stored in GitHub Secrets
+        password: ${{ secrets.DOCKER_PASSWORD }}  # Docker password stored in GitHub Secrets
+
+    - name: Build Docker image for Inventory Service
+      run: |
+       docker build -t ecommercemicroservice/inventoryservice:latest ./backend/InventoryService
+
+    - name: Push Docker image for Inventory Service
+      run: |
+        docker push ecommercemicroservice/inventoryservice:latest 
+
+    - name: Build Docker image for Product Service
+      run: |
+        docker build -t ecommercemicroservice/productservice:latest ./backend/ProductService  
+
+    - name: Push Docker image for Product Service
+      run: |
+        docker push ecommercemicroservice/productservice:latest  

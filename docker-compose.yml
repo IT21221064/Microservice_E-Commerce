@@ -1,0 +1,37 @@
+services:
+ 
+
+  inventoryservice:
+    image: ecommercemicroservice/inventoryservice:latest
+    ports:
+      - "5001:5001"
+    networks:
+      - ecommerce_network
+    depends_on:
+      - mongo
+
+  productservice:
+    image: ecommercemicroservice/productservice:latest
+    ports:
+      - "6001:6001"
+    networks:
+      - ecommerce_network
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    networks:
+      - ecommerce_network
+    volumes:
+      - mongo_data:/data/db
+
+networks:
+  ecommerce_network:
+    driver: bridge
+
+volumes:
+  mongo_data:
+    driver: local
