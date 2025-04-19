@@ -1,0 +1,31 @@
+name: Snyk Security Scan
+
+on:
+  push:
+    branches: [ Dev-Nadun ]  # Trigger on push to 'master' (change to 'main' if using 'main' as your default branch)
+
+jobs:
+  snyk:
+    name: Run Snyk to check for vulnerabilities
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v2
+
+      - name: Authenticate with Snyk
+        uses: snyk/actions/setup@v2
+        with:
+          token: ${{ secrets.SNYK_TOKEN }}
+
+      - name: Test docker-compose file for vulnerabilities
+        run: snyk test --docker ecommercemicroservice/productservice:latest --file=docker-compose.yml
+
+      - name: Test inventoryservice image
+        run: snyk test --docker ecommercemicroservice/inventoryservice:latest
+
+      - name: Test for vulnerabilities in manifest (docker-compose.yml)
+        run: snyk test --file=docker-compose.yml
