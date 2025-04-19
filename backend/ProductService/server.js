@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const path = require("path");
 const connectDB = require("./config/db");
-const errorHandler = require("./middleware/errorHandler");
+
 
 // Import routes
 const productRoutes = require("./routes/product.routes");
@@ -30,8 +30,7 @@ app.get("/api/health", (req, res) => {
   });
 });
 
-// Error Handling Middleware
-app.use(errorHandler);
+
 
 // Handle 404
 app.use((req, res) => {
@@ -42,7 +41,7 @@ app.use((req, res) => {
 });
 
 // Server Configuration
-const PORT = process.env.PORT || 5001;
+const PORT = process.env.PORT || 6001;
 const server = app.listen(PORT, () => {
   console.log(`Product Service running on port ${PORT}`);
 });
