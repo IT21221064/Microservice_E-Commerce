@@ -2,45 +2,59 @@ name: Snyk Security Scan
 
 on:
   push:
-    branches: [ Dev-Nadun ]
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
   snyk-inventory:
     name: Snyk - Inventory Service
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend/InventoryService
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Install dependencies (Inventory)
-        run: |
-          cd backend/inventoryService
-          npm install
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
 
-      - name: Run Snyk for Inventory Service
-        run: |
-          cd backend/inventoryService
-          npx snyk test
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/node@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: test
 
   snyk-product:
     name: Snyk - Product Service
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend/ProductService
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Install dependencies (Product)
-        run: |
-          cd backend/productService
-          npm install
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
 
-      - name: Run Snyk for Product Service
-        run: |
-          cd backend/productService
-          npx snyk test
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/node@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: test
