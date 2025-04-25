@@ -13,17 +13,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Navigate to inventoryService and install dependencies
-        working-directory: backend/inventoryService
-        run: npm install
+      - name: Install dependencies (Inventory)
+        run: |
+          cd backend/inventoryService
+          npm install
 
       - name: Run Snyk for Inventory Service
-        uses: snyk/actions/node@master
-        with:
-          args: test
+        run: |
+          cd backend/inventoryService
+          npx snyk test
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        working-directory: backend/inventoryService
 
   snyk-product:
     name: Snyk - Product Service
@@ -33,14 +33,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Navigate to productService and install dependencies
-        working-directory: backend/productService
-        run: npm install
+      - name: Install dependencies (Product)
+        run: |
+          cd backend/productService
+          npm install
 
       - name: Run Snyk for Product Service
-        uses: snyk/actions/node@master
-        with:
-          args: test
+        run: |
+          cd backend/productService
+          npx snyk test
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        working-directory: backend/productService
