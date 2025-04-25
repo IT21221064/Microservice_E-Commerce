@@ -29,4 +29,28 @@ jobs:
           npx snyk test
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-  
+
+  snyk-product:
+    name: Snyk - Product Service
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: |
+          cd backend/ProductService
+          npm install
+
+      - name: Run Snyk to check for vulnerabilities
+        run: |
+          cd backend/ProductService
+          npx snyk test
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
