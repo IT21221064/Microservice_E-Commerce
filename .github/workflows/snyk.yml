@@ -54,3 +54,5 @@ jobs:
           npx snyk test
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+          
